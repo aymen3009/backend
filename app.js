@@ -6,7 +6,9 @@ const cors = require('cors');
 require('dotenv/config');
 const api = process.env.API_URL;
 const todosRouter = require('./routers/todos');
-
+// if you want to use env file put your port there too
+// and if the port is not assign we will take 3000 as default
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.options('*', cors());
 
@@ -28,7 +30,14 @@ mongoose.connect(process.env.CONNECTION_STRING, {
     console.log(err)
 })
 
-app.listen(3000, () => {
+app.listen(PORT, ( ) => {
 
-    console.log('server is running')
+    console.log(`server run on port ${port}`)
 })
+// HANDLE 404 ERRORS 
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+}
+)

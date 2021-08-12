@@ -11,14 +11,14 @@ router.get(`/`, async (req, res) => {
 
 //post new todo
 router.post(`/`, async (req, res) => {
+    // remove date and status cz they have default values 
     let todos = new Todos({
         title: req.body.name,
         description: req.body.description,
         specialNotes: req.body.specialNotes,
-        dateCreated: req.body.dateCreated,
-        dueDate: req.body.dueDate,
-        status: req.body.status
+        dueDate: req.body.dueDate
     })
+       
     todos = await todos.save();
 
     if (!todos)
@@ -39,5 +39,21 @@ router.delete('/:id', (req, res) => {
         return res.status(400).json({ succes: false, error: err });
     })
 })
+// mark a todo as done
+router.put('/:id', async (req, res) => {
+        let todos = await Todos.findByIdAndUpdate(req.params.id, {
+        $set: {
+            status: true
+        }
+        }, {
+        // new = true to return the updated document 
+        new: true
+    })
+    if (!todos)
+        return res.status(404).send('no task found')
+    
+    res.send(todos);
+}
+)
 
 module.exports = router;

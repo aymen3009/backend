@@ -11,8 +11,7 @@ const todosSchems = mongoose.Schema({
         require: true
     },
     specialNotes: {
-        type: String,
-        require: false
+        type: String
     },
     dateCreated: {
         type: Date,
@@ -22,7 +21,11 @@ const todosSchems = mongoose.Schema({
     dueDate: {
         type: Date,
     },
-    status: Boolean
+    status: {
+        type: Boolean,
+        default: false
+    },
+
 })
 
 exports.Todos = mongoose.model('Todos', todosSchems);
